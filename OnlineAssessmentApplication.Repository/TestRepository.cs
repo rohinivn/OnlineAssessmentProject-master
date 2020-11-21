@@ -28,7 +28,7 @@ namespace OnlineAssessmentApplication.Repository
         }
         public void CreateNewTest(Test test) //To create new test
         {
-
+            test.Status = "InProgress";
             db.Tests.Add(test);
             db.SaveChanges();
 
@@ -63,8 +63,7 @@ namespace OnlineAssessmentApplication.Repository
             return db.Tests.Find(testId);
         }
 
-        readonly string userName = HttpContext.Current.User.Identity.Name.ToString();
-
+        readonly string userName = HttpContext.Current.User.Identity.Name.ToString(); 
         public IEnumerable<Test> DisplayAvailableTestDetails(FilterPanel filterPanel)
         {
             using (AssessmentDbContext AssessmentDBContext = new AssessmentDbContext())
@@ -72,17 +71,12 @@ namespace OnlineAssessmentApplication.Repository
                 if (HttpContext.Current.User.IsInRole("Student"))
                 {
                     User currentUser = AssessmentDBContext.Users.FirstOrDefault(user => user.Name == userName);
-                    IEnumerable<Test> tests = AssessmentDBContext.Tests.Where(test => test.Grade==currentUser.UserGrade && test.Status.Equals("Accepted") && test.Subject.Equals(filterPanel.SubjectId)&&test.TestName.Contains(filterPanel.SearchBy) ||filterPanel.SearchBy == null|| filterPanel.SubjectId == 0).ToList();
+                    IEnumerable<Test> tests = AssessmentDBContext.Tests.Where(test =>(test.Grade==currentUser.UserGrade && test.Status.Equals("Accepted") )&& (test.Subject.Equals(filterPanel.SubjectId) || filterPanel.SubjectId == 0 )&& (test.TestName.Contains(filterPanel.SearchBy) ||filterPanel.SearchBy == null)).ToList();
                     return tests;
                 }
-                else if (HttpContext.Current.User.IsInRole("Principal"))
+                else if (HttpContext.Current.User.IsInRole("Principal")|| HttpContext.Current.User.IsInRole("Teacher"))
                 {
-                    IEnumerable<Test> tests = AssessmentDBContext.Tests.Where(test=> test.Subject.Equals(filterPanel.SubjectId) && test.Grade.Equals(filterPanel.GradeId) && test.TestName.Contains(filterPanel.SearchBy)|| filterPanel.SearchBy == null || filterPanel.SubjectId == 0).ToList();
-                    return tests;
-                }
-                else if (HttpContext.Current.User.IsInRole("Teacher"))
-                {
-                    IEnumerable<Test> tests = AssessmentDBContext.Tests.Where(test =>test.Subject.Equals(filterPanel.SubjectId) && test.Grade.Equals(filterPanel.GradeId) && test.TestName.Contains(filterPanel.SearchBy)|| filterPanel.SearchBy == null&&filterPanel.GradeId==0||filterPanel.SubjectId==0).ToList();
+                    IEnumerable<Test> tests = AssessmentDBContext.Tests.Where(test => (test.Subject.Equals(filterPanel.SubjectId) || filterPanel.SubjectId == 0) && (test.Grade.Equals(filterPanel.GradeId)|| filterPanel.GradeId == 0) && (test.TestName.Contains(filterPanel.SearchBy) || filterPanel.SearchBy == null )).ToList();
                     return tests;
                 }
                 else

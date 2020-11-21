@@ -22,11 +22,9 @@ namespace OnlineAssessmentproject
         [TestMethod]
         public void CreateTest()
         {
-
             userRepository.Create(new User() { Name = "Manoj", EmailID = "manojradha@gmail.com", PhoneNumber = 8675674243, Password = "123", UserGrade = 2, RoleId = 1 });
             IEnumerable<User> fetchedData = db.Users.Where(temp => temp.EmailID == "manojradha@gmail.com")?.ToList();
             Assert.IsNotNull(fetchedData);
-
         }
         [TestMethod]
         public void EditTest()

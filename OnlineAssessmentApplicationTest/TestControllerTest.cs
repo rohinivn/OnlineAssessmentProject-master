@@ -24,7 +24,7 @@ namespace OnlineAssessmentApplicationTest
         {
             FilterPanel filterPanel = new FilterPanel() { SearchBy = "mid", SubjectId = 5 };
             // Arrange 
-
+            
             // Act
             ViewResult result = testController.UpcomingTest(filterPanel) as ViewResult;
 
@@ -57,7 +57,6 @@ namespace OnlineAssessmentApplicationTest
         //{
         //    int id = 3;
         //    bool status = testRepository.UpdateAcceptStatus(id);
-
         //}
     }
 }
