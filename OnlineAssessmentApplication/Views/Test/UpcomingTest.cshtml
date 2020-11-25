@@ -25,7 +25,7 @@
         @Html.Partial("_SubjectDropDownView", new OnlineAssessmentApplication.ViewModel.SubjectViewModel())
         @if (HttpContext.Current.User.IsInRole("Teacher") || HttpContext.Current.User.IsInRole("Principal"))
         {
-            <b>@Html.Label("Grade")</b>
+            <b>@Html.Label("Grade:")</b>
             @Html.Partial("_GradeDropDownView", new OnlineAssessmentApplication.ViewModel.GradeViewModel())
         }
         <button type="submit" class="btn btn-info btn-sm">Filter</button>
@@ -52,7 +52,7 @@
                     <p>@Html.DisplayNameFor(Model => Model.StartTime): @Html.DisplayFor(modelItem => item.StartTime)</p>
                     <p>@Html.DisplayNameFor(Model => Model.EndTime): @Html.DisplayFor(modelItem => item.EndTime)</p>
                     <p>@Html.DisplayNameFor(Model => Model.Passcode): @Html.DisplayFor(modelItem => item.Passcode)</p>
-
+                    <input type="hidden" name="testId" value="@item.TestId" />
                     @if (HttpContext.Current.User.IsInRole("Student"))
                     {<!-- Button trigger modal -->
                         if (DateTime.Now>=item.StartTime&&DateTime.Now<item.EndTime)
@@ -112,7 +112,9 @@
                         <input type="text" id="passcode" name="passcode" class="form-control mb-4" placeholder="Passcode">
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-success" id="button">Confirm</button>
+                            @*@Html.ActionLink("Confirm", "", new { testId = item.TestId }, new { @class = "btn btn-success",id="button"})*@
+
+                            <button type="button" class="btn btn-success" id="button" >Confirm</button>
                         </div>
                     </div>
                 </div>

@@ -11,7 +11,7 @@ namespace OnlineAssessmentApplication.ServiceLayer
         TestViewModel GetTestByTestId(int testId);
         IEnumerable<TestViewModel> DisplayAvailableTestDetails(FilterPanel filterPanel);
         IEnumerable<ResultViewModel> CalculateScore(ResultViewModel resultViewModel);
-        bool VerifyPasscode(int passcode);
+        int VerifyPasscode(int passcode);
         void CreateNewTest(CreateTestViewModel testViewModel);
         void UpdateTest(EditTestViewModel editedData);
         void DeleteTest(int testId);
@@ -42,7 +42,7 @@ namespace OnlineAssessmentApplication.ServiceLayer
             IEnumerable<TestViewModel> testViewModels = mapper.Map<IEnumerable<Test>, IEnumerable<TestViewModel>>(test);
             return testViewModels;
         }
-        public bool VerifyPasscode(int passcode)
+        public int VerifyPasscode(int passcode)
         {
             return testRepository.VerifyPasscode(passcode);
         }

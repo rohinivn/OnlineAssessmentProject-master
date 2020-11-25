@@ -11,7 +11,7 @@ namespace OnlineAssessmentApplication.Repository
     {
         IEnumerable<Test> DisplayAvailableTestDetails(FilterPanel filterPanel);
         IEnumerable<ResultViewModel> CalculateScore(ResultViewModel resultViewModel);
-        bool VerifyPasscode(int passcode);
+        int VerifyPasscode(int passcode);
         void CreateNewTest(Test test);
         Test GetTestByTestId(int testId);
         void UpdateTest(Test editTest);
@@ -86,15 +86,15 @@ namespace OnlineAssessmentApplication.Repository
             }
         }
 
-        public bool VerifyPasscode(int passcode)
+        public int VerifyPasscode(int passcode)
         {
             using (AssessmentDbContext AssessmentDBContext = new AssessmentDbContext())
             {
-                Test verifiedTest = AssessmentDBContext.Tests.Where(test => test.Passcode==passcode).FirstOrDefault();
-                if (verifiedTest!=null)
-                    return true;
+                Test verifiedTest = AssessmentDBContext.Tests.Where(test => test.Passcode==passcode).FirstOrDefault(); 
+                if (verifiedTest != null)
+                    return verifiedTest.TestId;
                 else
-                    return false;
+                    return 0;
             }
 
         }

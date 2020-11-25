@@ -78,8 +78,10 @@ namespace OnlineAssessmentApplication.Controllers
 
         public ActionResult VerifyPasscode(int passcode)
         {
-            if (testService.VerifyPasscode(passcode))
-                return RedirectToAction("TakeTest");
+            int testId = testService.VerifyPasscode(passcode);
+            TempData["testId"] = testId;
+            if (testId!=0)
+                return RedirectToAction("TakeTest",testId);
             else
             {
                 TempData["Passcode_Alert"] = "Wrong Passcode.Please enter the correct passcode";
@@ -103,6 +105,11 @@ namespace OnlineAssessmentApplication.Controllers
             testService.UpdateRejectStatus(testId);
             TempData["message"] = "Test Rejected Successfully";
             return RedirectToAction("index", "dashboard");
+        }
+        public ActionResult TakeTest(int testId)
+        {
+           
+            return View();
         }
     }
 }
